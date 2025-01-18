@@ -15,7 +15,7 @@ class SimpleTracker(QMainWindow):
         self.cwd = os.getcwd()
         self.saves_dir = os.path.join(self.cwd, '.saves')
         
-        self.ignore_dirs = {'.saves', '.git', '__pycache__', '.venv', 'venv', 'env', 'node_modules', '.pytest_cache'}
+        self.ignore_dirs = {'.tracker_status','.saves', '.git', '__pycache__', '.venv', 'venv', 'env', 'node_modules', '.pytest_cache'}
         self.ignore_extensions = {'.pyc', '.pyo', '.pyd', '.so', '.git'}
         
         # Add autosave settings
@@ -35,20 +35,31 @@ class SimpleTracker(QMainWindow):
         self.timer.timeout.connect(self.check_changes)
         self.timer.start(2000)
             # Create status file indicating running
-        self.status_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.tracker_status')
-        with open(self.status_file, 'w') as f:
-            f.write('running')
+        self.status_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 
+                                       '.tracker_status')
+        self.create_status_file()
 
         # Add deletion on close
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
 
-    def closeEvent(self, event):
-        # Remove status file when closing
+    def create_status_file(self):
+        try:
+            with open(self.status_file, 'w') as f:
+                f.write('running')
+        except Exception as e:
+            print(f"Error creating status file: {e}")
+
+
+    def cleanup_status_file(self):
         try:
             if os.path.exists(self.status_file):
                 os.remove(self.status_file)
         except Exception as e:
             print(f"Error removing status file: {e}")
+
+            
+    def closeEvent(self, event):
+        self.cleanup_status_file()
         super().closeEvent(event)
 
     def init_ui(self):
@@ -223,7 +234,18 @@ class SimpleTracker(QMainWindow):
             self.status.setText("State restored successfully")
 
 if __name__ == '__main__':
+    import signal
+    
     app = QApplication([])
     window = SimpleTracker()
+    
+    # Handle system signals
+    def signal_handler(signum, frame):
+        window.cleanup_status_file()
+        app.quit()
+    
+    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
+    
     window.show()
     app.exec()
