@@ -9,7 +9,7 @@ from PyQt6.QtCore import QTimer, Qt
 class SimpleTracker(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Simple File Tracker")
+        self.setWindowTitle("SFTM")
         self.setGeometry(100, 100, 600, 400)
         
         self.cwd = os.getcwd()
