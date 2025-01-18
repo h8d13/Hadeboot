@@ -10,23 +10,9 @@ Uses a combination Python PyQt bindings and assembly.
 ![Screenshot from 2025-01-18 17-06-23](https://github.com/user-attachments/assets/62f5b5ca-9c69-4d6f-85dd-9d656acb69b4)
 
 
-
-You can also configure actions easily (config.json) :
+You can also configure actions easily (config.json) and more.
 
 ```
-
-{
-    "system_monitor": "htop",
-    "monitor_commands": {
-        "gnome-system-monitor": ["gnome-system-monitor"],
-        "htop": ["x-terminal-emulator", "-e", "htop"],
-        "btm": ["x-terminal-emulator", "-e", "btm"]
-    },
-    "default_monitor": "gnome-system-monitor",
-    "timezone_offset": 1
-}
-
-``` 
 
 How to get it running:
 ---
