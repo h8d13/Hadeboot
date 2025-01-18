@@ -47,7 +47,7 @@ Testing primarly in X11 environments with KDE & PopOS
 
 ### Features:
 
-- ASM Clock 
+- ASM Clock / Simple File Tracker
 - Ressource Monitor + Display Icon
 - Clipboard History + Select + Visual indicator for COPY
 
