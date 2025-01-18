@@ -113,7 +113,7 @@ class SystemMonitorTray(QSystemTrayIcon):
         self.file_tracker_action = None
         self.file_tracker_active = False
         try:
-            self.clock_lib = CDLL(os.path.join(os.path.dirname(__file__), 'asm_so/libclock.so'))
+            self.clock_lib = CDLL(os.path.join(os.path.dirname(__file__), 'modules/asm_so/libclock.so'))
         except Exception as e:
             print(f"Failed to load clock library: {e}")
             self.clock_lib = None
@@ -125,6 +125,16 @@ class SystemMonitorTray(QSystemTrayIcon):
         self.setup_ui()
         self.start_monitoring()
         self.start_clock()
+        self.status_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 
+                                            'modules/.tracker_status')
+        self.tracker_process = None  # Store reference to tracker process
+
+    def cleanup_status_file(self): ## Exit
+        try:
+            if os.path.exists(self.status_file_path):
+                os.remove(self.status_file_path)
+        except Exception as e:
+            print(f"Error removing status file: {e}")
 
     def load_config(self):
         config_path = os.path.join(os.path.dirname(__file__), 'config.json')
@@ -197,7 +207,7 @@ class SystemMonitorTray(QSystemTrayIcon):
             self.menu.removeAction(self.file_tracker_action)
         
         # Create new action
-        self.file_tracker_action = QAction("Launch File Tracker", self.menu)
+        self.file_tracker_action = QAction("SFTM Status", self.menu)
         self.file_tracker_action.triggered.connect(self.launch_file_tracker)
         
         if os.path.exists(status_file):
@@ -228,7 +238,8 @@ class SystemMonitorTray(QSystemTrayIcon):
             return
             
         try:
-            subprocess.Popen([sys.executable, "modules/sftm.py"])
+            # Launch tracker as subprocess and store reference
+            self.tracker_process = subprocess.Popen([sys.executable, "modules/sftm.py"])
             self.file_tracker_active = True
             self.file_tracker_action.setIcon(create_icon("healthy"))
         except FileNotFoundError:
@@ -331,6 +342,19 @@ class SystemMonitorTray(QSystemTrayIcon):
                     2000
                 )
 
+
+    def cleanup(self):
+        # Terminate tracker process if it exists
+        if self.tracker_process:
+            try:
+                self.tracker_process.terminate()
+                self.tracker_process.wait(timeout=3)  # Wait up to 3 seconds for clean shutdown
+            except subprocess.TimeoutExpired:
+                self.tracker_process.kill()  # Force kill if it doesn't shut down cleanly
+            except Exception as e:
+                print(f"Error closing tracker: {e}")
+
+                
 def main():
     app = QApplication(sys.argv)
     app.setQuitOnLastWindowClosed(False)
@@ -341,6 +365,10 @@ def main():
     
     tray = SystemMonitorTray()
     app.tray = tray
+    
+    # Clean up everything when quitting
+    app.aboutToQuit.connect(tray.cleanup)
+    
     return app.exec()
 
 if __name__ == '__main__':
