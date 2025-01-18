@@ -10,6 +10,7 @@ from PyQt6.QtCore import QTimer, Qt, QMimeData, QSize
 import subprocess
 
 ## Added ASM clock. Added time offset default 1
+# Added File Tracker Module
 ## Clipboard, system metrics, Notifications Tray UI + config
 ## 100ms refresh, 2 seconds on system metrics 
 
@@ -150,7 +151,9 @@ class SystemMonitorTray(QSystemTrayIcon):
         self.update_clipboard_menu()
         
         self.menu.addSeparator()
-        
+        self.menu.addAction("Launch File Tracker").triggered.connect(self.launch_file_tracker)
+        self.menu.addSeparator()
+
         self.clock_action = self.menu.addAction("--:--:--.---.--.---")
         font = self.clock_action.font()
         font.setFamily("monospace")
@@ -176,6 +179,17 @@ class SystemMonitorTray(QSystemTrayIcon):
         self.update_system_metrics()
         self.update_clock()
         self.update_clipboard_menu()
+    
+    def launch_file_tracker(self):
+        try:
+            subprocess.Popen([sys.executable, "modules/sftm.py"])
+        except FileNotFoundError:
+            self.showMessage(
+                "Error", 
+                "Could not find sftm.py", 
+                QSystemTrayIcon.MessageIcon.Warning, 
+                2000
+            )
 
     def update_clipboard_menu(self):
         if not self.clipboard_menu:
@@ -281,3 +295,4 @@ def main():
 
 if __name__ == '__main__':
     sys.exit(main())
+
