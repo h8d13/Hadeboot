@@ -33,7 +33,7 @@ Installed requirements.
 
 You might have to get some PyQt dev tools:
 
-    sudo apt install -y libxcb1 libxcb-xinerama0 libxcb-cursor0 libxkbcommon-x11-0 libxcb-render0 libxcb-render-util0 qt6-base-dev
+    sudo apt install -y libxcb1 libxcb-xinerama0 libxcb-cursor0 libxkbcommon-x11-0 libxcb-render0 libxcb-render-util0 qt6-base-dev htop
 
 Then you can simply run the monitor.py script. 
 
