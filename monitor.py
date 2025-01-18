@@ -1,9 +1,4 @@
 #!/usr/bin/env python3
-
-## Added ASM clock.
-## Clipboard, system metrics, Notifications Tray UI + config
-## 100ms refresh, 2 seconds on system metrics 
-
 import sys
 import psutil
 import json
@@ -13,6 +8,10 @@ from PyQt6.QtWidgets import QApplication, QSystemTrayIcon, QMenu
 from PyQt6.QtGui import QIcon, QPainter, QColor, QPixmap, QClipboard
 from PyQt6.QtCore import QTimer, Qt, QMimeData, QSize
 import subprocess
+
+## Added ASM clock. Added time offset default 1
+## Clipboard, system metrics, Notifications Tray UI + config
+## 100ms refresh, 2 seconds on system metrics 
 
 class ClipboardManager:
     def __init__(self, max_history=10):
@@ -135,7 +134,8 @@ class SystemMonitorTray(QSystemTrayIcon):
                     "htop": ["x-terminal-emulator", "-e", "htop"],
                     "btm": ["x-terminal-emulator", "-e", "btm"]
                 },
-                "default_monitor": "gnome-system-monitor"
+                "default_monitor": "gnome-system-monitor",
+                "timezone_offset": 1  # GMT+1 by default
             }
             with open(config_path, 'w') as f:
                 json.dump(self.config, f, indent=4)
@@ -241,7 +241,11 @@ class SystemMonitorTray(QSystemTrayIcon):
                     byref(ms), byref(us), byref(ns)
                 )
                 
-                clock_text = f"{hours.value:02d}:{minutes.value:02d}:{seconds.value:02d}.{ms.value:03d}.{us.value:03d}.{ns.value:03d}"
+                # Apply timezone offset
+                offset = self.config.get("timezone_offset", 1)  # default to GMT+1 if not specified
+                adjusted_hours = (hours.value + offset) % 24
+                
+                clock_text = f"{adjusted_hours:02d}:{minutes.value:02d}:{seconds.value:02d}.{ms.value:03d}.{us.value:03d}.{ns.value:03d}"
                 self.clock_action.setText(clock_text)
             except Exception as e:
                 print(f"Clock update failed: {e}")
