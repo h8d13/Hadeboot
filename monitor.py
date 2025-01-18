@@ -5,11 +5,12 @@ import json
 import os
 from ctypes import CDLL, c_int, byref
 from PyQt6.QtWidgets import QApplication, QSystemTrayIcon, QMenu
-from PyQt6.QtGui import QIcon, QPainter, QColor, QPixmap, QClipboard
+from PyQt6.QtGui import QIcon, QPainter, QColor, QPixmap, QClipboard, QAction
 from PyQt6.QtCore import QTimer, Qt, QMimeData, QSize
 import subprocess
 
 ## Added ASM clock. Added time offset default 1
+## Added notification setting
 # Added File Tracker Module
 ## Clipboard, system metrics, Notifications Tray UI + config
 ## 100ms refresh, 2 seconds on system metrics 
@@ -29,11 +30,11 @@ class ClipboardManager:
                 self.history.insert(0, text)
                 if len(self.history) > self.max_history:
                     self.history.pop()
-                if QSystemTrayIcon.supportsMessages():
-                    tray = QApplication.instance().tray
+                tray = QApplication.instance().tray
+                if QSystemTrayIcon.supportsMessages() and tray.config.get("notifications_enabled", True):
                     tray.showMessage("Clipboard", f"Copied: {text[:50]}..." if len(text) > 50 else text,
                                    QSystemTrayIcon.MessageIcon.Information, 2000)
-                    tray.update_clipboard_menu()
+                tray.update_clipboard_menu()
 
 class SystemMetrics:
     def __init__(self):
@@ -136,7 +137,8 @@ class SystemMonitorTray(QSystemTrayIcon):
                     "btm": ["x-terminal-emulator", "-e", "btm"]
                 },
                 "default_monitor": "gnome-system-monitor",
-                "timezone_offset": 1  # GMT+1 by default
+                "timezone_offset": 1,  # GMT+1 by default
+                "notifications_enabled": True
             }
             with open(config_path, 'w') as f:
                 json.dump(self.config, f, indent=4)
@@ -149,6 +151,14 @@ class SystemMonitorTray(QSystemTrayIcon):
         self.menu = QMenu()
         self.clipboard_menu = self.menu.addMenu("Clipboard History")
         self.update_clipboard_menu()
+        
+        self.menu.addSeparator()
+        
+        # Add notifications toggle
+        notifications_action = QAction("Enable Notifications", self.menu, checkable=True)
+        notifications_action.setChecked(self.config.get("notifications_enabled", True))
+        notifications_action.triggered.connect(self.toggle_notifications)
+        self.menu.addAction(notifications_action)
         
         self.menu.addSeparator()
         self.menu.addAction("Launch File Tracker").triggered.connect(self.launch_file_tracker)
@@ -175,6 +185,13 @@ class SystemMonitorTray(QSystemTrayIcon):
         self.setContextMenu(self.menu)
         self.show()
 
+    def toggle_notifications(self, state):
+        self.config["notifications_enabled"] = state
+        # Save to config file
+        config_path = os.path.join(os.path.dirname(__file__), 'config.json')
+        with open(config_path, 'w') as f:
+            json.dump(self.config, f, indent=4)
+
     def on_menu_show(self):
         self.update_system_metrics()
         self.update_clock()
@@ -184,12 +201,13 @@ class SystemMonitorTray(QSystemTrayIcon):
         try:
             subprocess.Popen([sys.executable, "modules/sftm.py"])
         except FileNotFoundError:
-            self.showMessage(
-                "Error", 
-                "Could not find sftm.py", 
-                QSystemTrayIcon.MessageIcon.Warning, 
-                2000
-            )
+            if self.config.get("notifications_enabled", True):
+                self.showMessage(
+                    "Error", 
+                    "Could not find sftm.py", 
+                    QSystemTrayIcon.MessageIcon.Warning, 
+                    2000
+                )
 
     def update_clipboard_menu(self):
         if not self.clipboard_menu:
@@ -274,12 +292,13 @@ class SystemMonitorTray(QSystemTrayIcon):
         try:
             subprocess.Popen(command)
         except FileNotFoundError:
-            self.showMessage(
-                "Error", 
-                f"Could not find {monitor}", 
-                QSystemTrayIcon.MessageIcon.Warning, 
-                2000
-            )
+            if self.config.get("notifications_enabled", True):
+                self.showMessage(
+                    "Error", 
+                    f"Could not find {monitor}", 
+                    QSystemTrayIcon.MessageIcon.Warning, 
+                    2000
+                )
 
 def main():
     app = QApplication(sys.argv)
@@ -295,4 +314,3 @@ def main():
 
 if __name__ == '__main__':
     sys.exit(main())
-
