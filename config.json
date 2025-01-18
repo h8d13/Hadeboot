@@ -1,10 +1,21 @@
 {
     "system_monitor": "htop",
     "monitor_commands": {
-        "gnome-system-monitor": ["gnome-system-monitor"],
-        "htop": ["x-terminal-emulator", "-e", "htop"],
-        "btm": ["x-terminal-emulator", "-e", "btm"]
+        "gnome-system-monitor": [
+            "gnome-system-monitor"
+        ],
+        "htop": [
+            "x-terminal-emulator",
+            "-e",
+            "htop"
+        ],
+        "btm": [
+            "x-terminal-emulator",
+            "-e",
+            "btm"
+        ]
     },
     "default_monitor": "gnome-system-monitor",
-    "timezone_offset": -1
+    "timezone_offset": 1,
+    "notifications_enabled": true
 }
