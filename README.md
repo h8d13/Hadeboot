@@ -43,4 +43,11 @@ Info
 
 Testing primarly in X11 environments with KDE & PopOS
 
+### Features:
+
+- ASM Clock
+- Ressource Monitor + Display
+- Clipboard History + Select
+
+That's it folks. 
 
