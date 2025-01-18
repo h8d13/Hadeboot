@@ -23,3 +23,13 @@ You can also configure actions easily (config.json) :
 }
 
 ``` 
+
+How to get it running:
+---
+
+You might have to get some PyQt dev tools:
+
+    sudo apt install -y libxcb1 libxcb-xinerama0 libxcb-cursor0 libxkbcommon-x11-0 libxcb-render0 libxcb-render-util0 qt6-base-dev
+
+    
+
