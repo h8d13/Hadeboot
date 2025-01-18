@@ -34,6 +34,7 @@ Testing primarly in X11 environments with KDE & PopOS
 - ASM Clock / Simple File Tracker
 - Ressource Monitor + Display Icon
 - Clipboard History + Select + Visual indicator for COPY
+- Auto select pasted content through a neat extension by cavidcahill
 
 That's it folks. 
 
