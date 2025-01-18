@@ -12,8 +12,6 @@ Uses a combination Python PyQt bindings and assembly.
 
 You can also configure actions easily (config.json) and more.
 
-```
-
 How to get it running:
 ---
 
