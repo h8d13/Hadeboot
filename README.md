@@ -36,4 +36,9 @@ You might have to get some PyQt dev tools:
 
 Then you can simply run the monitor.py script. 
 
+Info
+---
+
+Testing primarly in X11 environments with KDE & PopOS
+
 
