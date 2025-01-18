@@ -20,7 +20,7 @@ class SimpleTracker(QMainWindow):
         
         # Add autosave settings
         self.autosave_enabled = False
-        self.autosave_interval = 15  # Default 5 minutes
+        self.autosave_interval = 15  # Default 15 minutes
         self.autosave_timer = QTimer()
         self.autosave_timer.timeout.connect(self.auto_save)
         
