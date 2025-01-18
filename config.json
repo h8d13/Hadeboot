@@ -1,0 +1,9 @@
+{
+    "system_monitor": "htop",
+    "monitor_commands": {
+        "gnome-system-monitor": ["gnome-system-monitor"],
+        "htop": ["x-terminal-emulator", "-e", "htop"],
+        "btm": ["x-terminal-emulator", "-e", "btm"]
+    },
+    "default_monitor": "gnome-system-monitor"
+}
