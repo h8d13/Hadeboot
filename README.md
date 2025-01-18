@@ -19,7 +19,8 @@ You can also configure actions easily (config.json) :
         "htop": ["x-terminal-emulator", "-e", "htop"],
         "btm": ["x-terminal-emulator", "-e", "btm"]
     },
-    "default_monitor": "gnome-system-monitor"
+    "default_monitor": "gnome-system-monitor",
+    "timezone_offset": 1
 }
 
 ``` 
