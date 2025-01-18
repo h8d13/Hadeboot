@@ -7,8 +7,7 @@ Thought it was funny to name it Goblin as I enjoy GNOME a lot for how reliable.
 
 Uses a combination Python PyQt bindings and assembly. 
 
-![Screenshot from 2025-01-18 17-06-23](https://github.com/user-attachments/assets/62f5b5ca-9c69-4d6f-85dd-9d656acb69b4)
-
+![image](https://github.com/user-attachments/assets/36bbf811-ee17-40c6-bc40-ce1e50328443)
 
 You can also configure actions easily (config.json) and more.
 
