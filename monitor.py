@@ -163,7 +163,7 @@ class SystemMonitorTray(QSystemTrayIcon):
         self.menu.addAction(notifications_action)
         
         self.menu.addSeparator()
-        self.file_tracker_action = QAction("Launch File Tracker", self.menu)
+        self.file_tracker_action = QAction("Status SFTM", self.menu)
         self.file_tracker_action.triggered.connect(self.launch_file_tracker)
         self.menu.addAction(self.file_tracker_action)
         self.menu.addSeparator()
