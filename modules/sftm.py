@@ -4,7 +4,7 @@ import json
 import hashlib
 from datetime import datetime
 from PyQt6.QtWidgets import *
-from PyQt6.QtCore import QTimer
+from PyQt6.QtCore import QTimer, Qt
 
 class SimpleTracker(QMainWindow):
     def __init__(self):
@@ -34,6 +34,22 @@ class SimpleTracker(QMainWindow):
         self.timer = QTimer()
         self.timer.timeout.connect(self.check_changes)
         self.timer.start(2000)
+            # Create status file indicating running
+        self.status_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.tracker_status')
+        with open(self.status_file, 'w') as f:
+            f.write('running')
+
+        # Add deletion on close
+        self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
+
+    def closeEvent(self, event):
+        # Remove status file when closing
+        try:
+            if os.path.exists(self.status_file):
+                os.remove(self.status_file)
+        except Exception as e:
+            print(f"Error removing status file: {e}")
+        super().closeEvent(event)
 
     def init_ui(self):
         widget = QWidget()
