@@ -14,7 +14,7 @@ import subprocess
 # Added File Tracker Module + Visual Inidicator
 ## Clipboard, system metrics, Notifications Tray UI + config
 ### Updated UI for more responsive feeling
-## 100ms refresh, 2 seconds on system metrics 
+## 100ms clock refresh, 20 seconds on system metrics 
 
 class ClipboardManager:
     def __init__(self, max_history=10):
@@ -272,7 +272,7 @@ class SystemMonitorTray(QSystemTrayIcon):
         self.metrics_timer = QTimer()
         self.metrics_timer.timeout.connect(self.update_system_metrics)
         self.metrics_timer.timeout.connect(self.update_file_tracker_status)
-        self.metrics_timer.start(5000)
+        self.metrics_timer.start(20000)
 
     def start_clock(self):
         self.clock_timer = QTimer()
@@ -373,3 +373,5 @@ def main():
 
 if __name__ == '__main__':
     sys.exit(main())
+
+
