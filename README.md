@@ -1,3 +1,5 @@
-# Hadeboot
+# Hadeboot - Goblin Launcher
 
-Passion project for balanced ternary assembly code.
+This is a passion project for Linux system modifications. 
+
+
