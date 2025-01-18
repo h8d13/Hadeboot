@@ -197,7 +197,7 @@ class SystemMonitorTray(QSystemTrayIcon):
     def start_monitoring(self):
         self.metrics_timer = QTimer()
         self.metrics_timer.timeout.connect(self.update_system_metrics)
-        self.metrics_timer.start(2000)  # Update system metrics every 2 seconds
+        self.metrics_timer.start(5000)  # Update system metrics every 5 seconds + on open
 
     def start_clock(self):
         self.clock_timer = QTimer()
