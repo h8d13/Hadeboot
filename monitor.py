@@ -4,15 +4,16 @@ import psutil
 import json
 import os
 from ctypes import CDLL, c_int, byref
-from PyQt6.QtWidgets import QApplication, QSystemTrayIcon, QMenu
+from PyQt6.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QMessageBox
 from PyQt6.QtGui import QIcon, QPainter, QColor, QPixmap, QClipboard, QAction
 from PyQt6.QtCore import QTimer, Qt, QMimeData, QSize
 import subprocess
 
 ## Added ASM clock. Added time offset default 1
 ## Added notification setting
-# Added File Tracker Module
+# Added File Tracker Module + Visual Inidicator
 ## Clipboard, system metrics, Notifications Tray UI + config
+### Updated UI for more responsive feeling
 ## 100ms refresh, 2 seconds on system metrics 
 
 class ClipboardManager:
@@ -109,6 +110,8 @@ def create_icon(status):
 class SystemMonitorTray(QSystemTrayIcon):
     def __init__(self):
         super().__init__()
+        self.file_tracker_action = None
+        self.file_tracker_active = False
         try:
             self.clock_lib = CDLL(os.path.join(os.path.dirname(__file__), 'asm_so/libclock.so'))
         except Exception as e:
@@ -154,14 +157,15 @@ class SystemMonitorTray(QSystemTrayIcon):
         
         self.menu.addSeparator()
         
-        # Add notifications toggle
         notifications_action = QAction("Enable Notifications", self.menu, checkable=True)
         notifications_action.setChecked(self.config.get("notifications_enabled", True))
         notifications_action.triggered.connect(self.toggle_notifications)
         self.menu.addAction(notifications_action)
         
         self.menu.addSeparator()
-        self.menu.addAction("Launch File Tracker").triggered.connect(self.launch_file_tracker)
+        self.file_tracker_action = QAction("Launch File Tracker", self.menu)
+        self.file_tracker_action.triggered.connect(self.launch_file_tracker)
+        self.menu.addAction(self.file_tracker_action)
         self.menu.addSeparator()
 
         self.clock_action = self.menu.addAction("--:--:--.---.--.---")
@@ -185,9 +189,29 @@ class SystemMonitorTray(QSystemTrayIcon):
         self.setContextMenu(self.menu)
         self.show()
 
+    def update_file_tracker_status(self):
+        status_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'modules/.tracker_status')
+        
+        # Remove existing action
+        if self.file_tracker_action:
+            self.menu.removeAction(self.file_tracker_action)
+        
+        # Create new action
+        self.file_tracker_action = QAction("Launch File Tracker", self.menu)
+        self.file_tracker_action.triggered.connect(self.launch_file_tracker)
+        
+        if os.path.exists(status_file):
+            self.file_tracker_active = True
+            self.file_tracker_action.setIcon(create_icon("healthy"))
+        else:
+            self.file_tracker_active = False
+            self.file_tracker_action.setIcon(QIcon())
+        
+        # Insert action at the original position
+        self.menu.insertAction(self.clock_action, self.file_tracker_action)
+
     def toggle_notifications(self, state):
         self.config["notifications_enabled"] = state
-        # Save to config file
         config_path = os.path.join(os.path.dirname(__file__), 'config.json')
         with open(config_path, 'w') as f:
             json.dump(self.config, f, indent=4)
@@ -196,10 +220,17 @@ class SystemMonitorTray(QSystemTrayIcon):
         self.update_system_metrics()
         self.update_clock()
         self.update_clipboard_menu()
-    
+
     def launch_file_tracker(self):
+        if self.file_tracker_active:
+            QMessageBox.warning(None, "Already Running", 
+                            "File Tracker is already running!")
+            return
+            
         try:
             subprocess.Popen([sys.executable, "modules/sftm.py"])
+            self.file_tracker_active = True
+            self.file_tracker_action.setIcon(create_icon("healthy"))
         except FileNotFoundError:
             if self.config.get("notifications_enabled", True):
                 self.showMessage(
@@ -229,12 +260,13 @@ class SystemMonitorTray(QSystemTrayIcon):
     def start_monitoring(self):
         self.metrics_timer = QTimer()
         self.metrics_timer.timeout.connect(self.update_system_metrics)
-        self.metrics_timer.start(5000)  # Update system metrics every 5 seconds + on open
+        self.metrics_timer.timeout.connect(self.update_file_tracker_status)
+        self.metrics_timer.start(5000)
 
     def start_clock(self):
         self.clock_timer = QTimer()
         self.clock_timer.timeout.connect(self.update_clock)
-        self.clock_timer.start(100)  # Update clock every 100ms
+        self.clock_timer.start(100)
 
     def update_system_metrics(self):
         metrics = SystemMetrics.get_current_metrics()
@@ -273,8 +305,7 @@ class SystemMonitorTray(QSystemTrayIcon):
                     byref(ms), byref(us), byref(ns)
                 )
                 
-                # Apply timezone offset
-                offset = self.config.get("timezone_offset", 1)  # default to GMT+1 if not specified
+                offset = self.config.get("timezone_offset", 1)
                 adjusted_hours = (hours.value + offset) % 24
                 
                 clock_text = f"{adjusted_hours:02d}:{minutes.value:02d}:{seconds.value:02d}.{ms.value:03d}.{us.value:03d}.{ns.value:03d}"
