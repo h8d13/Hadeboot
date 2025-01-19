@@ -68,7 +68,7 @@ class SimpleTracker(QMainWindow):
         layout = QVBoxLayout()
         
         # Status label
-        self.status = QLabel("Monitoring changes...")
+        self.status = QLabel(f"Monitoring changes in {self.cwd}...")
         self.status.setWordWrap(True)
         
         # Buttons
@@ -191,7 +191,7 @@ class SimpleTracker(QMainWindow):
         if changes:
             self.status.setText("\n".join(changes[:5] + ['...'] if len(changes) > 5 else changes))
         else:
-            self.status.setText("No changes detected")
+            self.status.setText(f"{self.cwd} No changes detected")
 
     def prompt_save(self):
         comment, ok = QInputDialog.getText(self, 'Save', 'Comment for this save:')
