@@ -10,7 +10,7 @@ from PyQt6.QtGui import QIcon, QClipboard, QAction
 from PyQt6.QtCore import QTimer, Qt, QMimeData, QSize
 import subprocess
 
-## Added ASM clock. Added time offset default 1
+## Added ASM clock. Added time offset default 1 (don't ask)
 ## Added notification setting
 # Added File Tracker Module + Visual Inidicator
 ## Clipboard, system metrics, Notifications Tray UI + config
@@ -247,7 +247,6 @@ class SystemMonitorTray(QSystemTrayIcon):
 
         self.menu.addSeparator()
         self.menu.addAction("System Info").triggered.connect(self.launch_info_window)
-        self.menu.addSeparator()
 
         self.menu.addSeparator()
         self.menu.addAction("Exit").triggered.connect(QApplication.quit)
@@ -308,7 +307,7 @@ class SystemMonitorTray(QSystemTrayIcon):
                     QSystemTrayIcon.MessageIcon.Warning, 
                     2000
                 )
-
+###
     def launch_file_tracker(self):
         if self.file_tracker_active:
             QMessageBox.warning(None, "Already Running", 
@@ -446,5 +445,3 @@ def main():
 
 if __name__ == '__main__':
     sys.exit(main())
-
-
