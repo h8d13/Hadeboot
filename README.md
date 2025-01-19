@@ -29,12 +29,16 @@ Info
 
 Testing primarly in X11 environments with KDE & PopOS
 
-### Features:
+### Base Features:
 
 - ASM Clock / Simple File Tracker
 - Ressource Monitor + Display Icon
 - Clipboard History + Select + Visual indicator for COPY
+
+### Robotix Features
+- Setup verification
 - Auto select pasted content through a neat extension by davidcahill
+
 
 That's it folks. 
 
