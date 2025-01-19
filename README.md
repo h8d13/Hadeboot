@@ -6,7 +6,7 @@ I wanted to be able to get a good system going quicker with less manual installa
 
 ![capture-d-ecran-de-l-une-des-premieres-versions-d-_1_2000](https://github.com/user-attachments/assets/a6bd4685-b01d-4b15-9c66-e4ec1415ae23)
 
-Uses a combination Python PyQt bindings and assembly. 
+Uses a combination Python PyQt bindings and assembly for the clock. 
 
 ![Screenshot from 2025-01-19 14-35-26](https://github.com/user-attachments/assets/65a4da2f-6e09-4e38-8aac-f88f1ac37a67)
 ![Screenshot from 2025-01-19 14-34-45](https://github.com/user-attachments/assets/a1cbccbe-9ee9-4dd0-af94-0a924efcb7be)
