@@ -37,7 +37,8 @@ Testing primarly in X11 environments with KDE & PopOS
 
 ### Robotix Features
 - Setup verification
-- Auto select pasted content through a neat extension by davidcahill
+- (VS Code) Auto select pasted content through a neat extension by davidcahill
+- (VS Code) CTRL ALT + D for compare double file
 
 
 That's it folks. 
