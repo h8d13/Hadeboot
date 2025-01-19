@@ -38,8 +38,8 @@ Testing primarly in X11 environments with KDE & PopOS
 - Clipboard History + Select + Visual indicator for COPY
 
 ### Robotix Features
-- Setup verification
-- (VS Code) Auto select pasted content through a neat extension by davidcahill + Python extensions
+- Setup verification for main tools
+- (VS Code Optional) Auto select pasted content through a neat extension by davidcahill + Python extensions
 
 
 That's it folks. 
