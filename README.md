@@ -8,7 +8,9 @@ I wanted to be able to get a good system going quicker with less manual installa
 
 Uses a combination Python PyQt bindings and assembly. 
 
-![image](https://github.com/user-attachments/assets/36bbf811-ee17-40c6-bc40-ce1e50328443)
+![Screenshot from 2025-01-19 14-35-26](https://github.com/user-attachments/assets/65a4da2f-6e09-4e38-8aac-f88f1ac37a67)
+![Screenshot from 2025-01-19 14-34-45](https://github.com/user-attachments/assets/a1cbccbe-9ee9-4dd0-af94-0a924efcb7be)
+![Screenshot from 2025-01-19 14-34-07](https://github.com/user-attachments/assets/bd940ca0-9754-4a69-a8df-8b5e987c069c)
 
 You can also configure actions easily (config.json) and more.
 
