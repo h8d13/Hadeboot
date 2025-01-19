@@ -11,7 +11,7 @@ def check_and_install_packages():
         "build-essential", "libc6-dev", "python3-dev",
         "libxcb1", "libxcb-xinerama0", "libxcb-cursor0",
         "libxkbcommon-x11-0", "libxcb-render0", "libxcb-render-util0",
-        "qt6-base-dev", "htop"
+        "qt6-base-dev", "htop", "code"
     ]
     missing_packages = []
     
