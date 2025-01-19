@@ -3,10 +3,18 @@ import json
 import os
 from pathlib import Path
 
-def install_extension_and_configure():
-    # Install the extension
-    subprocess.run(['code', '--install-extension', 'davidcahill.auto-select-pasted-text'])
-
+def install_extensions_and_configure():
+    # Extensions to install
+    extensions = [
+        "davidcahill.auto-select-pasted-text",
+        "ms-python.python",
+        "ms-vscode.cpptools"
+    ]
+    
+    # Install extensions
+    for extension in extensions:
+        subprocess.run(['code', '--install-extension', extension])
+    
     settings_path = Path.home() / '.config/Code/User/settings.json'
     keybindings_path = Path.home() / '.config/Code/User/keybindings.json'
     
@@ -45,10 +53,10 @@ def install_extension_and_configure():
     with open(keybindings_path, 'w') as f:
         json.dump(keybindings, f, indent=4)
     
-    print("Paste extension installed and keyboard shortcut: Compare CTRL ALT D configured!")
+    print("Extensions installed and keyboard shortcut: Compare CTRL ALT D configured!")
 
 if __name__ == "__main__":
     try:
-        install_extension_and_configure()
+        install_extensions_and_configure()
     except Exception as e:
         print(f"An error occurred: {str(e)}")
