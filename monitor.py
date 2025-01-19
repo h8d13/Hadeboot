@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 import sys
-import psutil
+
 import json
 import os
 from ctypes import CDLL, c_int, byref
-from PyQt6.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QMessageBox
-from PyQt6.QtGui import QIcon, QPainter, QColor, QPixmap, QClipboard, QAction
+
+from PyQt6.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QMessageBox, QWidget, QVBoxLayout, QLabel
+from PyQt6.QtGui import QIcon, QClipboard, QAction
 from PyQt6.QtCore import QTimer, Qt, QMimeData, QSize
 import subprocess
 
@@ -14,7 +15,7 @@ import subprocess
 # Added File Tracker Module + Visual Inidicator
 ## Clipboard, system metrics, Notifications Tray UI + config
 ### Updated UI for more responsive feeling
-## 100ms clock refresh, 20 seconds on system metrics 
+## 100ms clock refresh, 20 seconds on system metrics + on open
 
 class ClipboardManager:
     def __init__(self, max_history=10):
@@ -37,6 +38,10 @@ class ClipboardManager:
                                    QSystemTrayIcon.MessageIcon.Information, 2000)
                 tray.update_clipboard_menu()
 
+
+import psutil
+from PyQt6.QtGui import QIcon, QPainter, QColor, QPixmap
+
 class SystemMetrics:
     def __init__(self):
         self.cpu = 0.0
@@ -47,10 +52,6 @@ class SystemMetrics:
         self.ram_total = ""
         self.swap_used = ""
         self.swap_total = ""
-        self.net_send = ""
-        self.net_recv = ""
-        self._last_net_io = psutil.net_io_counters()
-        self._last_time = psutil.boot_time()
 
     def _get_size_str(self, bytes):
         for unit in ['B', 'KB', 'MB', 'GB', 'TB']:
@@ -107,6 +108,59 @@ def create_icon(status):
     icon.setIsMask(True)
     return icon
 
+class ClockWindow(QWidget):
+    def __init__(self, clock_lib, config):
+        super().__init__()
+        self.clock_lib = clock_lib
+        self.config = config
+        self.setup_ui()
+        self.start_clock()
+        
+    def setup_ui(self):
+        self.setWindowTitle("High Precision Clock")
+        self.setFixedSize(400, 100)
+        
+        layout = QVBoxLayout()
+        self.clock_label = QLabel("--:--:--.---.---.---")
+        self.clock_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        
+        # Set font to be large and monospace
+        font = self.clock_label.font()
+        font.setFamily("monospace")
+        font.setPointSize(20)
+        self.clock_label.setFont(font)
+        
+        layout.addWidget(self.clock_label)
+        self.setLayout(layout)
+
+    def start_clock(self):
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.update_clock)
+        self.timer.start(1)  # 1ms refresh rate
+        
+    def update_clock(self):
+        if self.clock_lib:
+            hours = c_int()
+            minutes = c_int()
+            seconds = c_int()
+            ms = c_int()
+            us = c_int()
+            ns = c_int()
+            
+            try:
+                self.clock_lib.get_time(
+                    byref(hours), byref(minutes), byref(seconds),
+                    byref(ms), byref(us), byref(ns)
+                )
+                
+                offset = self.config.get("timezone_offset", 1)
+                adjusted_hours = (hours.value + offset) % 24
+                
+                clock_text = f"{adjusted_hours:02d}:{minutes.value:02d}:{seconds.value:02d}.{ms.value:03d}.{us.value:03d}.{ns.value:03d}"
+                self.clock_label.setText(clock_text)
+            except Exception as e:
+                self.clock_label.setText("Clock Error")
+
 class SystemMonitorTray(QSystemTrayIcon):
     def __init__(self):
         super().__init__()
@@ -120,6 +174,7 @@ class SystemMonitorTray(QSystemTrayIcon):
 
         self.clipboard_manager = ClipboardManager()
         self.clipboard_menu = None
+        self.clock_window = None 
         self.menu = None
         self.load_config()
         self.setup_ui()
@@ -182,15 +237,18 @@ class SystemMonitorTray(QSystemTrayIcon):
         font = self.clock_action.font()
         font.setFamily("monospace")
         self.clock_action.setFont(font)
-        
-        self.menu.addSeparator()
+        self.clock_action.triggered.connect(self.show_clock_window) 
         
         self.status_action = self.menu.addAction("Updating...")
         font = self.status_action.font()
         font.setFamily("monospace")
         self.status_action.setFont(font)
         self.status_action.triggered.connect(self.launch_system_monitor)
-                
+
+        self.menu.addSeparator()
+        self.menu.addAction("System Info").triggered.connect(self.launch_info_window)
+        self.menu.addSeparator()
+
         self.menu.addSeparator()
         self.menu.addAction("Exit").triggered.connect(QApplication.quit)
         
@@ -220,6 +278,12 @@ class SystemMonitorTray(QSystemTrayIcon):
         # Insert action at the original position
         self.menu.insertAction(self.clock_action, self.file_tracker_action)
 
+    def show_clock_window(self):
+        if self.clock_window is None:
+            self.clock_window = ClockWindow(self.clock_lib, self.config)
+        self.clock_window.show()
+        self.clock_window.activateWindow()
+
     def toggle_notifications(self, state):
         self.config["notifications_enabled"] = state
         config_path = os.path.join(os.path.dirname(__file__), 'config.json')
@@ -230,6 +294,20 @@ class SystemMonitorTray(QSystemTrayIcon):
         self.update_system_metrics()
         self.update_clock()
         self.update_clipboard_menu()
+
+    def launch_info_window(self):
+        try:
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            info_script = os.path.join(script_dir, "modules/setup.py")  
+            subprocess.Popen([sys.executable, info_script])
+        except Exception as e:
+            if self.config.get("notifications_enabled", True):
+                self.showMessage(
+                    "Error", 
+                    f"Could not launch System Info: {str(e)}", 
+                    QSystemTrayIcon.MessageIcon.Warning, 
+                    2000
+                )
 
     def launch_file_tracker(self):
         if self.file_tracker_active:
@@ -284,19 +362,12 @@ class SystemMonitorTray(QSystemTrayIcon):
         status = metrics.get_status()
         
         self.setIcon(create_icon(status))
-        tooltip = (
-            f"CPU: {metrics.cpu:6.1f}%\n"
-            f"RAM: {metrics.ram:6.1f}% ({metrics.ram_used}/{metrics.ram_total})\n"
-            f"Swap: {metrics.swap:6.1f}% ({metrics.swap_used}/{metrics.swap_total})\n"
-            f"Disk: {metrics.disk:6.1f}%\n"
-        )
-        self.setToolTip(tooltip)
-        
+
         status_text = (
             f"CPU: {metrics.cpu:>6.1f}% | "
             f"RAM: {metrics.ram:>6.1f}% | "
             f"Swap: {metrics.swap:>6.1f}% | "
-            f"Disk: {metrics.disk:>6.1f}%"
+            f"Disk: {metrics.disk:>6.1f}% "
         ).ljust(50)
         
         self.status_action.setText(status_text)
@@ -353,6 +424,8 @@ class SystemMonitorTray(QSystemTrayIcon):
                 self.tracker_process.kill()  # Force kill if it doesn't shut down cleanly
             except Exception as e:
                 print(f"Error closing tracker: {e}")
+        if self.clock_window:
+            self.clock_window.close()
 
                 
 def main():
