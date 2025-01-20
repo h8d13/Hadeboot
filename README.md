@@ -13,8 +13,9 @@ Also trying to save setup stress through the info panel + extensions installatio
 
 Uses a combination Python PyQt bindings and assembly for the clock. 
 
-![Screenshot from 2025-01-19 14-35-26](https://github.com/user-attachments/assets/65a4da2f-6e09-4e38-8aac-f88f1ac37a67)
-![Screenshot from 2025-01-19 14-34-45](https://github.com/user-attachments/assets/a1cbccbe-9ee9-4dd0-af94-0a924efcb7be)
+![image](https://github.com/user-attachments/assets/b7794569-13f6-452d-807a-dbe7c7ff5421)
+![image](https://github.com/user-attachments/assets/47f76382-4e67-468c-82f7-c5da7a708424)
+
 ![Screenshot from 2025-01-19 14-34-07](https://github.com/user-attachments/assets/bd940ca0-9754-4a69-a8df-8b5e987c069c)
 ![image](https://github.com/user-attachments/assets/be37ca66-1377-4e4c-9e5b-c4cd0b56f9f5)
 
