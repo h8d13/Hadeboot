@@ -52,7 +52,7 @@ Info
 
 Testing primarly in X11 environments with KDE & PopOS
 
-### Base Features:
+### Base Features (Tray system):
 
 - ASM Clock
 - Simple File Tracker
@@ -67,9 +67,13 @@ Notifications
 
 ![image](https://github.com/user-attachments/assets/42a2ef2d-9ca6-430f-b883-874d346cb7ae)
 
-### Robotix Features
+### Robotix Features (System info panel)
 - Setup verification for main tools
 - Auto select pasted content through a neat extension by davidcahill + Python extensions
+
+### Configurable:
+
+![image](https://github.com/user-attachments/assets/6e77d8ff-5989-4bb8-a186-d89e5c95a901)
 
 
 That's it folks. 
