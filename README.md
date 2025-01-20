@@ -59,7 +59,8 @@ Testing primarly in X11 environments with KDE & PopOS
 
 ![image](https://github.com/user-attachments/assets/4ac86eac-df2f-4b08-a22b-b3743185c2bf)
 
-/Notifications
+Notifications
+
 ![image](https://github.com/user-attachments/assets/42a2ef2d-9ca6-430f-b883-874d346cb7ae)
 
 ### Robotix Features
