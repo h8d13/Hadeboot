@@ -14,7 +14,6 @@ Also trying to save setup stress through the info panel + extensions installatio
 
 Uses a combination Python PyQt bindings and assembly for the clock. 
 
-![image](https://github.com/user-attachments/assets/b7794569-13f6-452d-807a-dbe7c7ff5421)
 ![image](https://github.com/user-attachments/assets/47f76382-4e67-468c-82f7-c5da7a708424)
 
 ![Screenshot from 2025-01-19 14-34-07](https://github.com/user-attachments/assets/bd940ca0-9754-4a69-a8df-8b5e987c069c)
@@ -28,6 +27,9 @@ The result is a clean folder with clear direction. Save modules/config for machi
 
 ![Screenshot from 2025-01-20 14-38-58](https://github.com/user-attachments/assets/5c4f1834-2ea7-4e43-b448-89c68d9daa7f)
 ![Screenshot from 2025-01-20 14-38-31](https://github.com/user-attachments/assets/617fa20c-9c62-4eb5-9484-cccb4589c0a8)
+
+And in interface for easy access. 
+![image](https://github.com/user-attachments/assets/b7794569-13f6-452d-807a-dbe7c7ff5421)
 
 How to get it running:
 ---
