@@ -44,9 +44,9 @@ Testing primarly in X11 environments with KDE & PopOS
 ### Base Features:
 
 - ASM Clock / Simple File Tracker
-    - Autosave interval
-    - Project tree view     
-- Ressource Monitor + Display Icon
+    - Autosave Interval
+    - Project Tree View (python specific)  
+- Ressource Monitor + Display Icon (red, orange, green)
 - Clipboard History + Select + Visual indicator for COPY
 
 ### Robotix Features
