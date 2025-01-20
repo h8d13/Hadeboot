@@ -49,7 +49,7 @@ Testing primarly in X11 environments with KDE & PopOS
 
 ### Robotix Features
 - Setup verification for main tools
-- (VS Code Optional) Auto select pasted content through a neat extension by davidcahill + Python extensions
+- Auto select pasted content through a neat extension by davidcahill + Python extensions
 
 
 That's it folks. 
