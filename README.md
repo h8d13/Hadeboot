@@ -14,10 +14,12 @@ Also trying to save setup stress through the info panel + extensions installatio
 
 Uses a combination Python PyQt bindings and assembly for the clock. 
 
+SFTM
 ![image](https://github.com/user-attachments/assets/47f76382-4e67-468c-82f7-c5da7a708424)
-
-![Screenshot from 2025-01-19 14-34-07](https://github.com/user-attachments/assets/bd940ca0-9754-4a69-a8df-8b5e987c069c)
 ![image](https://github.com/user-attachments/assets/be37ca66-1377-4e4c-9e5b-c4cd0b56f9f5)
+
+Info + Auto setup
+![Screenshot from 2025-01-19 14-34-07](https://github.com/user-attachments/assets/bd940ca0-9754-4a69-a8df-8b5e987c069c)
 
 The idea is to enhance a workflow, not replicating existing things but instead having a simple local version of tools that are useful for everyday use and easily link tools for regular usage. 
 
@@ -28,11 +30,8 @@ The result is a clean folder with clear direction. Save modules/config for machi
 ### Use, Build, Restore saves
 
 ![Screenshot from 2025-01-20 14-38-58](https://github.com/user-attachments/assets/5c4f1834-2ea7-4e43-b448-89c68d9daa7f)
-![image](https://github.com/user-attachments/assets/b1a34e98-5e1e-4ebf-b503-de7df93e65a7)
-
-Auto setup screen:
 ![Screenshot from 2025-01-20 14-38-31](https://github.com/user-attachments/assets/617fa20c-9c62-4eb5-9484-cccb4589c0a8)
-
+![image](https://github.com/user-attachments/assets/b1a34e98-5e1e-4ebf-b503-de7df93e65a7)
 
 Interface for easy access. 
 
