@@ -5,7 +5,12 @@ def install_extensions_and_configure():
     extensions = [
         "davidcahill.auto-select-pasted-text",
         "ms-python.python",
-        "ms-vscode.cpptools"
+        "ms-vscode.cpptools",
+        "twxs.cmake",
+        "ms-vscode.cmake-tools",
+        "ms-vscode.hexeditor",
+        "ms-vscode.makefile-tools",
+
     ]
 
     # Install extensions
