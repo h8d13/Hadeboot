@@ -68,8 +68,8 @@ Notifications
 ![image](https://github.com/user-attachments/assets/42a2ef2d-9ca6-430f-b883-874d346cb7ae)
 
 ### Robotix Features (System info panel)
-- Setup verification for main tools
-- Auto select pasted content through a neat extension by davidcahill + Python extensions
+- Setup verification for main tools > Install missing (NASM, GCC, Dev tools, etc)
+- Auto select pasted content through a neat extension by davidcahill + more useful VS Code extensions
 
 ### Configurable:
 
