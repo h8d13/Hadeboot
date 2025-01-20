@@ -54,7 +54,8 @@ Testing primarly in X11 environments with KDE & PopOS
 
 ### Base Features:
 
-- ASM Clock / Simple File Tracker
+- ASM Clock
+- Simple File Tracker
     - Autosave Interval
     - Project Tree View (python specific)  
 - Ressource Monitor + Display Icon (red, orange, green)
