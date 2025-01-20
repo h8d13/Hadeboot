@@ -3,30 +3,50 @@ sys.dont_write_bytecode = True
 
 import site
 import signal
+import os
+import json
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                             QLabel, QTextEdit, QTabWidget)
 from PyQt6.QtCore import Qt, QTimer 
-import json
 import platform
 
 from helpers.hadeboot_utils import get_system_info
+from robotix.vs_code_setup import install_extensions_and_configure
+
+def check_first_run():
+    config_file = os.path.expanduser('~/.hadeboot_config.json')
+    if not os.path.exists(config_file):
+        return True
+    
+    with open(config_file, 'r') as f:
+        config = json.load(f)
+        return not config.get('initial_setup_complete', False)
+
+def mark_setup_complete():
+    config_file = os.path.expanduser('~/.hadeboot_config.json')
+    config = {'initial_setup_complete': True}
+    
+    with open(config_file, 'w') as f:
+        json.dump(config, f)
 
 class InfoWindow(QMainWindow):
     def __init__(self, results):
         super().__init__()
         self.results = results
         self.init_ui()
-        self.start_refresh_timer()
-        
-    def start_refresh_timer(self):
-        self.refresh_timer = QTimer()
-        self.refresh_timer.timeout.connect(self.refresh_info)
-        self.refresh_timer.start(60000)  # Refresh every minute
         
     def cleanup(self):
-        if hasattr(self, 'refresh_timer'):
-            self.refresh_timer.stop()
-        self.results = None
+            # Delete the system info JSON file
+            try:
+                json_file = 'modules/helpers/tmp/system_info.json'
+                if os.path.exists(json_file):
+                    os.remove(json_file)
+                    print("Temporary system info file cleaned up")
+            except Exception as e:
+                print(f"Error cleaning up system info file: {e}")
+                
+            # Remove references
+            self.results = None
         
     def closeEvent(self, event):
         self.cleanup()
@@ -51,10 +71,6 @@ class InfoWindow(QMainWindow):
         self.tabs.addTab(self.create_python_tab(), "Python Info")
         self.tabs.addTab(self.create_json_tab(), "Full Details")
         layout.addWidget(self.tabs)
-
-    def refresh_info(self):
-        self.results = get_system_info()
-        self.update_tabs()
         
     def update_tabs(self):
         current_index = self.tabs.currentIndex()
@@ -149,7 +165,17 @@ def signal_handler(signum, frame):
                 window.cleanup()
         app.quit()
 
+
 def main():
+    if check_first_run():
+        print("Running first-time setup...")
+        try:
+            install_extensions_and_configure()
+            mark_setup_complete()
+            print("First-time setup completed successfully.")
+        except Exception as e:
+            print(f"Error during first-time setup: {e}")
+    
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
     
