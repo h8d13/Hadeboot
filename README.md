@@ -6,6 +6,7 @@ I wanted to be able to get a good system going quicker with less manual installa
 
 The idea is to use it in a working directory and keep it running with auto-save. 
 This is especially useful when working with large codebase, with several tools, and even more helpful if you end up changing code too much. 
+I especially like to launch this tool within neural network projects or anything that is going to need a lot of tweaks. 
 
 Also trying to save setup stress through the info panel + extensions installation. 
 
