@@ -76,5 +76,10 @@ Notifications
 ![image](https://github.com/user-attachments/assets/6e77d8ff-5989-4bb8-a186-d89e5c95a901)
 
 
+---
+Why this project? 
+
+Since these dependencies are pretty stable, I wanted to see how far you can take a system using an existing tool + a kind of wrapper that could do full circle locally.
+
 That's it folks. 
 
