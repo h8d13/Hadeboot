@@ -5,6 +5,7 @@ import os
 import platform
 import subprocess
 from datetime import datetime
+import json
 
 def check_and_install_packages():
     packages = [
@@ -125,5 +126,13 @@ def get_system_info():
         "requirements": requirements,
         "environment": {var: os.environ.get(var, "Not set") for var in env_vars}
     }
+    
+    # Save the info to a JSON file
+    try:
+        os.makedirs('modules/helpers/tmp', exist_ok=True)
+        with open('modules/helpers/tmp/system_info.json', 'w') as f:
+            json.dump(info, f, indent=4)  # Fixed the argument order
+    except Exception as e:
+        print(f"Error saving system info to JSON: {e}")
     
     return info
