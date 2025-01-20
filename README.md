@@ -81,5 +81,12 @@ Why this project?
 
 Since these dependencies are pretty stable, I wanted to see how far you can take a system using an existing tool (VSCode) + a kind of wrapper (Goblin) + link to other needs (through shortcuts/automation) and that in the system tray as it's convenient. For example, I've had several projects where I found bugs now because of my monitor dot turning orange for CPU (45%) and just added a break where appropriate. 
 
+Also have quick access to Meld is something I enjoy as I don't like the built in tools for this on VS Code, there is a good command:
+
+![Screenshot from 2025-01-20 15-30-05](https://github.com/user-attachments/assets/9da3c6ad-ed15-4aa1-8f29-36b0fb141a82)
+
+But that is not set by default.
+
+
 That's it folks. 
 
