@@ -19,8 +19,8 @@ Uses a combination Python PyQt bindings and assembly for the clock.
 ![Screenshot from 2025-01-19 14-34-07](https://github.com/user-attachments/assets/bd940ca0-9754-4a69-a8df-8b5e987c069c)
 ![image](https://github.com/user-attachments/assets/be37ca66-1377-4e4c-9e5b-c4cd0b56f9f5)
 
-You can also configure actions easily (config.json) and more.
-The idea is to enhance a workflow, not replicating existing things but isntead having a simple local version of tools that are useful for everyday use. 
+The idea is to enhance a workflow, not replicating existing things but instead having a simple local version of tools that are useful for everyday use and easily link tools for regular usage. 
+
 QoL for large projects, I wanted to make sure that I have everything at the end of my fingertips. 
 
 The result is a clean folder with clear direction. Save modules/config for machine sided needs, and build out the rest of a project. It's also fully local with '.' files and configs for easy modification.
