@@ -5,6 +5,8 @@ Thought it was funny to name it GOBLIN as I enjoy GNOME a lot for how reliable.
 I wanted to be able to get a good system going quicker with less manual installation. So here we are. 
 
 The idea is to use it in a working directory and keep it running with auto-save. 
+This is especially useful when working with large codebase, with several tools, and even more helpful if you end up changing code too much. 
+
 Also trying to save setup stress through the info panel + extensions installation. 
 
 ![capture-d-ecran-de-l-une-des-premieres-versions-d-_1_2000](https://github.com/user-attachments/assets/a6bd4685-b01d-4b15-9c66-e4ec1415ae23)
