@@ -55,8 +55,10 @@ Testing primarly in X11 environments with KDE & PopOS
     - Autosave Interval
     - Project Tree View (python specific)  
 - Ressource Monitor + Display Icon (red, orange, green)
-- Clipboard History + Select + Visual indicator for COPY
+- Clipboard History + Select + Visual indicator/Notifications for COPY
+
 ![image](https://github.com/user-attachments/assets/4ac86eac-df2f-4b08-a22b-b3743185c2bf)
+![image](https://github.com/user-attachments/assets/42a2ef2d-9ca6-430f-b883-874d346cb7ae)
 
 ### Robotix Features
 - Setup verification for main tools
