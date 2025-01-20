@@ -205,8 +205,13 @@ class SystemMonitorTray(QSystemTrayIcon):
                     "btm": ["x-terminal-emulator", "-e", "btm"]
                 },
                 "default_monitor": "gnome-system-monitor",
-                "timezone_offset": 1,  # GMT+1 by default
-                "notifications_enabled": True
+                "timezone_offset": 1, ## DONT ASK
+                "notifications_enabled": True,
+                "shortcuts": {
+                    "Meld": ["meld"],
+                    "Terminal": ["x-terminal-emulator"],
+                    "Text Editor": ["gedit"]
+                }
             }
             with open(config_path, 'w') as f:
                 json.dump(self.config, f, indent=4)
@@ -221,12 +226,16 @@ class SystemMonitorTray(QSystemTrayIcon):
         self.update_clipboard_menu()
         
         self.menu.addSeparator()
+    
+        # Add Shortcuts submenu
+        shortcuts_menu = self.menu.addMenu("Shortcuts")
+        for name, command in self.config.get("shortcuts", {}).items():
+            action = shortcuts_menu.addAction(name)
+            action.triggered.connect(lambda checked, cmd=command: self.launch_shortcut(cmd))
         
-        notifications_action = QAction("Enable Notifications", self.menu, checkable=True)
-        notifications_action.setChecked(self.config.get("notifications_enabled", True))
-        notifications_action.triggered.connect(self.toggle_notifications)
-        self.menu.addAction(notifications_action)
-        
+        self.menu.addSeparator()
+        self.menu.addAction("Exit").triggered.connect(QApplication.quit)
+    
         self.menu.addSeparator()
         self.file_tracker_action = QAction("Status SFTM", self.menu)
         self.file_tracker_action.triggered.connect(self.launch_file_tracker)
@@ -247,6 +256,10 @@ class SystemMonitorTray(QSystemTrayIcon):
 
         self.menu.addSeparator()
         self.menu.addAction("System Info").triggered.connect(self.launch_info_window)
+        notifications_action = QAction("Enable Notifications", self.menu, checkable=True)
+        notifications_action.setChecked(self.config.get("notifications_enabled", True))
+        notifications_action.triggered.connect(self.toggle_notifications)
+        self.menu.addAction(notifications_action)
 
         self.menu.addSeparator()
         self.menu.addAction("Exit").triggered.connect(QApplication.quit)
@@ -255,6 +268,19 @@ class SystemMonitorTray(QSystemTrayIcon):
         
         self.setContextMenu(self.menu)
         self.show()
+
+    def launch_shortcut(self, command):
+        try:
+            subprocess.Popen(command)
+        except FileNotFoundError:
+            if self.config.get("notifications_enabled", True):
+                self.showMessage(
+                    "Error", 
+                    f"Could not find {command[0]}", 
+                    QSystemTrayIcon.MessageIcon.Warning, 
+                    2000
+                )
+
 
     def update_file_tracker_status(self):
         status_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'modules/.tracker_status')

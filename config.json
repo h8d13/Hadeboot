@@ -17,5 +17,9 @@
     },
     "default_monitor": "gnome-system-monitor",
     "timezone_offset": 1,
-    "notifications_enabled": true
+    "notifications_enabled": true,
+    "shortcuts": {
+        "Meld": ["meld"],
+        "Terminal": ["x-terminal-emulator"]
+    }
 }
