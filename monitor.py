@@ -234,9 +234,6 @@ class SystemMonitorTray(QSystemTrayIcon):
             action.triggered.connect(lambda checked, cmd=command: self.launch_shortcut(cmd))
         
         self.menu.addSeparator()
-        self.menu.addAction("Exit").triggered.connect(QApplication.quit)
-    
-        self.menu.addSeparator()
         self.file_tracker_action = QAction("Status SFTM", self.menu)
         self.file_tracker_action.triggered.connect(self.launch_file_tracker)
         self.menu.addAction(self.file_tracker_action)
