@@ -29,6 +29,7 @@ The result is a clean folder with clear direction. Save modules/config for machi
 ![Screenshot from 2025-01-20 14-38-31](https://github.com/user-attachments/assets/617fa20c-9c62-4eb5-9484-cccb4589c0a8)
 
 And in interface for easy access. 
+
 ![image](https://github.com/user-attachments/assets/b7794569-13f6-452d-807a-dbe7c7ff5421)
 
 How to get it running:
