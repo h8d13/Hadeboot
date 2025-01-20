@@ -5,6 +5,9 @@ import hashlib
 from datetime import datetime
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import QTimer, Qt
+from subprocess import Popen
+import sys
+from pathlib import Path
 
 class SimpleTracker(QMainWindow):
     def __init__(self):
@@ -34,7 +37,7 @@ class SimpleTracker(QMainWindow):
         self.timer = QTimer()
         self.timer.timeout.connect(self.check_changes)
         self.timer.start(2000)
-            # Create status file indicating running
+        # Create status file indicating running
         self.status_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 
                                        '.tracker_status')
         self.create_status_file()
@@ -74,7 +77,8 @@ class SimpleTracker(QMainWindow):
         # Buttons
         save_btn = QPushButton("Save Current State")
         restore_btn = QPushButton("Restore Previous State")
-        
+        structure_btn = QPushButton("View Project Structure")
+
         # Autosave group
         autosave_group = QGroupBox("Autosave Settings")
         autosave_layout = QHBoxLayout()
@@ -97,13 +101,32 @@ class SimpleTracker(QMainWindow):
         # Connect buttons
         save_btn.clicked.connect(self.prompt_save)
         restore_btn.clicked.connect(self.prompt_restore)
+        structure_btn.clicked.connect(self.open_structure_viewer)
 
         # Add widgets to layout
         layout.addWidget(self.status)
         layout.addWidget(autosave_group)
         layout.addWidget(save_btn)
         layout.addWidget(restore_btn)
+        layout.addWidget(structure_btn)
+
         widget.setLayout(layout)
+
+    def open_structure_viewer(self):
+        try:
+            # Assuming your structure viewer script is named 'project_structure.py'
+            # and is in the same directory as this script
+            script_path = Path(__file__).parent / 'helpers/struc.py'
+            
+            if sys.platform.startswith('win'):
+                Popen(['python', str(script_path)], shell=True)
+            else:
+                Popen(['python3', str(script_path)])
+                
+            self.status.setText("Opening project structure viewer...")
+        except Exception as e:
+            self.status.setText(f"Error opening structure viewer: {str(e)}")
+
 
     def should_ignore(self, path):
         path_parts = path.split(os.sep)

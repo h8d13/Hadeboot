@@ -6,9 +6,10 @@ import signal
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                             QLabel, QTextEdit, QTabWidget)
 from PyQt6.QtCore import Qt, QTimer 
-from helpers.hadeboot_utils import get_system_info
 import json
 import platform
+
+from helpers.hadeboot_utils import get_system_info
 
 class InfoWindow(QMainWindow):
     def __init__(self, results):
@@ -20,7 +21,7 @@ class InfoWindow(QMainWindow):
     def start_refresh_timer(self):
         self.refresh_timer = QTimer()
         self.refresh_timer.timeout.connect(self.refresh_info)
-        self.refresh_timer.start(20000)  # Refresh every 20 seconds
+        self.refresh_timer.start(60000)  # Refresh every minute
         
     def cleanup(self):
         if hasattr(self, 'refresh_timer'):
