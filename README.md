@@ -87,6 +87,7 @@ Also have quick access to Meld is something I enjoy as I don't like the built in
 
 But that is not set by default.
 
+I also think some of these features should be default to an OS which made it even more fun to work on. 
 
 That's it folks. 
 
