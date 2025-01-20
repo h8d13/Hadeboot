@@ -79,7 +79,7 @@ Notifications
 ---
 Why this project? 
 
-Since these dependencies are pretty stable, I wanted to see how far you can take a system using an existing tool + a kind of wrapper that could do full circle locally.
+Since these dependencies are pretty stable, I wanted to see how far you can take a system using an existing tool (VSCode) + a kind of wrapper (Goblin) + link to other needs (through shortcuts/automation) and that in the system tray as it's convenient. For example, I've had several projects where I found bugs now because of my monitor dot turning orange for CPU (45%) and just added a break where appropriate. 
 
 That's it folks. 
 
