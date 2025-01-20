@@ -42,6 +42,8 @@ Testing primarly in X11 environments with KDE & PopOS
 ### Base Features:
 
 - ASM Clock / Simple File Tracker
+    - Autosave interval
+    - Project tree view     
 - Ressource Monitor + Display Icon
 - Clipboard History + Select + Visual indicator for COPY
 
