@@ -20,6 +20,7 @@ Uses a combination Python PyQt bindings and assembly for the clock.
 
 You can also configure actions easily (config.json) and more.
 The idea is to enhance a workflow, not replicating existing things but isntead having a simple local version of tools that are useful for everyday use. 
+QoL for large projects, I wanted to make sure that I have everything at the end of my fingertips. 
 
 How to get it running:
 ---
