@@ -54,11 +54,12 @@ Testing primarly in X11 environments with KDE & PopOS
 ### Base Features (Tray system):
 
 - ASM Clock
+- Shortcuts
 - Simple File Tracker
     - Autosave Interval
     - Project Tree View (python specific)  
 - Ressource Monitor + Display Icon (red, orange, green)
-- Clipboard History + Select + Visual indicator for COPY
+- Clipboard History + Select + Visual indicator for COPY 
 
 ![image](https://github.com/user-attachments/assets/4ac86eac-df2f-4b08-a22b-b3743185c2bf)
 
